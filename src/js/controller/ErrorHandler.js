@@ -2,7 +2,7 @@ import pubsub from "./pubsub";
 
 const errorContainer = document.getElementById("error-message");
 
-pubsub.on("errorOccured", (message) => {
+pubsub.on("showError", (message) => {
     showError(message);
 });
 

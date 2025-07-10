@@ -22,11 +22,15 @@ async function fetchWeatherData(cityName) {
 
 async function processResponse(response) {
 	const json = await response.json();
-
 	const requiredKeys = [
 		"resolvedAddress",
 		"currentConditions"
 	];
+
+    const currentConditionsRequired = [
+        "temp",
+        "icon"
+    ];
 
 	for(const key of requiredKeys) {
 		if(!(key in json)) {
@@ -34,13 +38,17 @@ async function processResponse(response) {
 		}
 	}
 
-	if(!("temp" in json.currentConditions)) {
-		throw new Error(`Invalid data from api: missing key "temp" in json.currentConditions`);
-	}
+    for(const key of currentConditionsRequired) {
+        if(!(key in json.currentConditions)) {
+            throw new Error(`Invalid data from api: missing current conditions key ${key}`);
+        }
+    }
 
 	const data = {
 		"address": json.resolvedAddress,
-		"currentTemp": Math.round(json.currentConditions.temp)
+		"currentTemp": Math.round(json.currentConditions.temp),
+        "icon": json.currentConditions.icon
 	};
+    
 	return data; 
 }
