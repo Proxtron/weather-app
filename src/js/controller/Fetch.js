@@ -7,26 +7,40 @@ export async function getWeatherData(location) {
 
 async function fetchWeatherData(cityName) {
 	const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${cityName}?key=${API_KEY}`;
+
 	try {
 		const response = await fetch(url);
 		if (response.status !== 200) {
-			throw new Error(`HTTP Error: Code ${response.status}`);
+			throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
 		}
-        return response;
-	} catch (error) {
-        throw new Error(`Failed to fetch weather data`)
-    }
+		return response;
+	} catch(error) {
+		throw new Error(`Failed to fetch weather data: ${error.message}`);
+	}
+	
 }
 
 async function processResponse(response) {
-	try {
-		const json = await response.json();
-		const data = {
-			"address": json.resolvedAddress,
-			"currentTemp": Math.round(json.currentConditions.temp)
-		};
-		return data;
-	} catch (error) {
-		throw new Error(`Error occured when processing weather data`);
+	const json = await response.json();
+
+	const requiredKeys = [
+		"resolvedAddress",
+		"currentConditions"
+	];
+
+	for(const key of requiredKeys) {
+		if(!(key in json)) {
+			throw new Error(`Invalid data from api: missing key ${key}`)
+		}
 	}
+
+	if(!("temp" in json.currentConditions)) {
+		throw new Error(`Invalid data from api: missing key "temp" in json.currentConditions`);
+	}
+
+	const data = {
+		"address": json.resolvedAddress,
+		"currentTemp": Math.round(json.currentConditions.temp)
+	};
+	return data; 
 }
