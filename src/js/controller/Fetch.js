@@ -1,7 +1,6 @@
 const API_KEY = "B68NJ32CSW9BF9FFDJD4F3ESM";
 
 export async function getWeatherData(location) {
-    
     const response = await fetchWeatherData(location);
     return await processResponse(response);
 }
@@ -15,15 +14,19 @@ async function fetchWeatherData(cityName) {
 		}
         return response;
 	} catch (error) {
-        console.error(error.message);
+        throw new Error(`Failed to fetch weather data`)
     }
 }
 
 async function processResponse(response) {
-    const json = await response.json();
-	const data = {
-		"address": json.resolvedAddress,
-		"currentTemp": Math.round(json.currentConditions.temp)
-	};
-    return data;
+	try {
+		const json = await response.json();
+		const data = {
+			"address": json.resolvedAddress,
+			"currentTemp": Math.round(json.currentConditions.temp)
+		};
+		return data;
+	} catch (error) {
+		throw new Error(`Error occured when processing weather data`);
+	}
 }

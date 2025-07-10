@@ -1,8 +1,10 @@
 import formView from "../view/Form";
 import { getWeatherData } from "./Fetch";
+import pubsub from "./pubsub";
 
 export default {
     formContainer: document.getElementById("form-container"),
+    errorContainer: document.getElementById("error-message"),
 
     init() {
         this.showForm();
@@ -19,18 +21,23 @@ export default {
     formCallBack(event) {
         event.preventDefault();
 
-        const locationInputValue = this.form.querySelector("#location-input").value;
+        this.locationInput = this.form.querySelector("#location-input");
+        const locationInputValue = this.locationInput.value;
+
         this.retrieveData(locationInputValue)
         .then((weatherData) => {
-            console.log(weatherData);
+            this.errorContainer.innerText = "";
+            this.locationInput.value = "";
+            pubsub.emit("displayWeather", weatherData);
         }).catch((error) => {
-            console.error(error);
+            this.errorContainer.innerText = "";
+            this.locationInput.value = "";
+            this.errorContainer.innerText = error.message;
         });
     },
 
     async retrieveData(location) {
-        const weatherData = await getWeatherData(location);
-        return weatherData;
+        return await getWeatherData(location);
     }
 
 };
