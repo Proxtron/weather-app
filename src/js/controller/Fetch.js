@@ -24,7 +24,8 @@ async function processResponse(response) {
 	const json = await response.json();
 	const requiredKeys = [
 		"resolvedAddress",
-		"currentConditions"
+		"currentConditions",
+		"description"
 	];
 
     const currentConditionsRequired = [
@@ -47,7 +48,9 @@ async function processResponse(response) {
 	const data = {
 		"address": json.resolvedAddress,
 		"currentTemp": Math.round(json.currentConditions.temp),
-        "icon": json.currentConditions.icon
+        "icon": json.currentConditions.icon,
+		"description": json.description
+		
 	};
     
 	return data; 

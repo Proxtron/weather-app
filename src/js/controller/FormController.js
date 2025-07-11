@@ -1,6 +1,7 @@
 import formView from "../view/Form";
 import { getWeatherData } from "./Fetch";
 import pubsub from "./pubsub";
+import { setErrorElement } from "./ErrorHandler";
 
 export default {
     formContainer: document.getElementById("form-container"),
@@ -14,6 +15,7 @@ export default {
         this.formContainer.innerHTML = "";
         const form = formView();
         this.form = form;
+        this.errorContainer = this.formContainer.querySelector("#error-message");
         this.formContainer.appendChild(form);
     },
 
@@ -30,6 +32,7 @@ export default {
             pubsub.emit("hideError");
         }).catch((error) => {
             this.locationInput.value = "";
+            setErrorElement(this.errorContainer);
             pubsub.emit("showError", error.message);
         });
     },

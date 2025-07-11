@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+:root {
+    font-family: Inter, sans-serif;
+    /* Backgrounds */
+    --color-background-primary: #EEF1F5; /* Soft Off-White/Pale Blue-Gray */
+    --color-background-secondary: #E0E3E8; /* Light Blue-Gray, for cards/sections */
+
+    /* Text & Icons */
+    --color-text-primary: #334155; /* Dark Slate Blue/Gray, main text */
+    --color-text-secondary: #64748B; /* Medium Slate Gray, secondary details */
+
+    /* Accents */
+    --color-accent-1: #4A90E2; /* Medium Sky Blue, e.g., current temperature */
+    --color-accent-2: #AABAC8; /* Desaturated Blue-Gray, e.g., precipitation chance */
+    --color-highlight-interactive: #8CC0DE; /* Lighter Blue, for interactive elements or subtle highlights */
+
+    /* Optional: For potential error states or warnings */
+    --color-status-error: #F44336; /* A common red, not explicitly listed but good to have */
+
+}
+
+header {
+    background-color: var(--color-background-secondary);
+    min-height: 10vh;
+    color: var(--color-text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 2rem;
+}
+
+main {
+    min-height: 90vh;
+    background-color: var(--color-background-primary);
+    color: var(--color-text-primary);
+}
+
+.main-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 4rem 0 0 0;
+}
+
+.location-input {
+    background-color: var(--color-highlight-interactive);
+    border: 1px solid var(--color-text-primary);
+    appearance: none;
+    padding:.75rem 1.5rem;
+    font-size: 2rem;
+    border-radius: 1.5rem;
+    display: block;
+    width:100%;
+    
+}
+
+.input-section {
+    grid-column: 1/3;
+}
+
+.search-weather-btn {
+    grid-column: 1/3;
+    justify-self: center;
+    padding:.75rem 1.5rem;
+    border-radius: 1rem;
+    appearance: none;
+    border: 1px solid var(--color-text-primary);
+    background-color: var(--color-accent-2);
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.location-form {
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 3.5rem;
+    row-gap:2rem;
+}
+
+#form-container {
+    margin-bottom: 2rem;
+}
+
+.weather-display {
+    background-color: var(--color-background-secondary);
+    padding: 3rem;
+    border-radius: 3rem;
+    display:grid;
+    grid-template-columns: 300px 1fr;;
+}
+
+.location-name {
+    color:var(--color-text-primary);
+    opacity: .8;
+}
+
+hr {
+    margin: 2rem 0;
+}
+
+.temp-data {
+    font-size:4rem;
+}
+
+.weather-data-section {
+    padding: 0rem 2rem;
+}
+
+#error-message {
+    color:var(--color-status-error);
+    height:1rem;
+    padding:1rem;
+}

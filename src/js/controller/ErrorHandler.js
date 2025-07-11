@@ -1,12 +1,18 @@
 import pubsub from "./pubsub";
 
-const errorContainer = document.getElementById("error-message");
+let errorContainer;
+
+export function setErrorElement(element) {
+    errorContainer = element;
+}
 
 pubsub.on("showError", (message) => {
+    errorContainer = document.getElementById("error-message");
     showError(message);
 });
 
 pubsub.on("hideError", () => {
+    errorContainer = document.getElementById("error-message");
     hideError();
 })
 
