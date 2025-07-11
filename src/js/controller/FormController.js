@@ -2,6 +2,7 @@ import formView from "../view/Form";
 import { getWeatherData } from "./Fetch";
 import pubsub from "./pubsub";
 import { setErrorElement } from "./ErrorHandler";
+import * as SpinnerController from "./SpinnerController";
 
 export default {
     formContainer: document.getElementById("form-container"),
@@ -25,6 +26,7 @@ export default {
         this.locationInput = this.form.querySelector("#location-input");
         const locationInputValue = this.locationInput.value;
 
+        SpinnerController.showSpinner();
         this.retrieveData(locationInputValue)
         .then((weatherData) => {
             this.locationInput.value = "";
@@ -34,6 +36,8 @@ export default {
             this.locationInput.value = "";
             setErrorElement(this.errorContainer);
             pubsub.emit("showError", error.message);
+        }).finally(() => {
+            SpinnerController.hideSpinner();
         });
     },
 
