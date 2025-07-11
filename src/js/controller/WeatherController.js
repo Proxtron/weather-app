@@ -3,6 +3,9 @@ import weatherDisplayView from "../view/WeatherDisplay"
 
 export default {
     weatherContainer: document.getElementById("weather-container"),
+    usUnits: true,
+    weatherData: null,
+
     iconMap: {
         snow: {
             src: import("../../assets/icon/snow.svg"),
@@ -47,20 +50,30 @@ export default {
     },
 
     addEventListeners() {
-        pubsub.on("displayWeather", (weatherData) => { this.displayWeather(weatherData)});
+        pubsub.on("displayWeather", (weatherData) => { 
+            this.weatherData = weatherData;
+            this.displayWeather();
+        });
+
+        pubsub.on("unitChange", () => this.toggleUnits());
     },
 
-    displayWeather(weatherData) {
+    displayWeather() {
         this.weatherContainer.innerHTML = "";
 
-        const weatherView = weatherDisplayView(weatherData);
+        const weatherView = weatherDisplayView(this.weatherData, this.usUnits);
         
         const weatherIcon = weatherView.querySelector("#weather-icon");
-        this.iconMap[weatherData.icon].src.then((icon) => weatherIcon.src = icon.default);
-        weatherIcon.alt = this.iconMap[weatherData.icon].alt;
+        this.iconMap[this.weatherData.icon].src.then((icon) => weatherIcon.src = icon.default);
+        weatherIcon.alt = this.iconMap[this.weatherData.icon].alt;
 
         this.weatherContainer.appendChild(weatherView);
-
-        
     },
+
+    toggleUnits() {
+        this.usUnits = !this.usUnits
+        if(this.weatherData) {
+            this.displayWeather();
+        }
+    }
 };

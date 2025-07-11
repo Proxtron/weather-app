@@ -48,10 +48,14 @@ async function processResponse(response) {
 	const data = {
 		"address": json.resolvedAddress,
 		"currentTemp": Math.round(json.currentConditions.temp),
+		"currentTempMetric": fahrenheitToCelsius(json.currentConditions.temp),
         "icon": json.currentConditions.icon,
 		"description": json.description
-		
 	};
     
 	return data; 
+}
+	
+function fahrenheitToCelsius(degrees) {
+    return Math.round((degrees - 32) * 5 / 9);
 }
